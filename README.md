@@ -15,6 +15,20 @@
 - **Session counter** — tracks exchanges in current session
 - **API key stays server-side** — never exposed to the browser
 
+## 🚀 Live Demo
+
+This is a full-stack Next.js app (server-side AI API route), so it can't run on GitHub Pages or Surge.sh (static-only).
+
+### ⚡ One-Click Deploy to Vercel (free, recommended for Next.js)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Farjundroid12%2Fai-chatbot-ui)
+
+**Steps (~3 minutes):**
+1. Click the button above
+2. Sign in to Vercel with your GitHub account
+3. Set the `ZAI_API_KEY` env var to your z-ai-web-dev-sdk API key
+4. Click "Deploy"
+
 ## 🚀 Quick Start
 
 ```bash
