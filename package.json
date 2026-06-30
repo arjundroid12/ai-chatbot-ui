@@ -1,0 +1,19 @@
+{
+  "name": "ai-chatbot-ui",
+  "version": "1.0.0",
+  "description": "AI chatbot UI with streaming responses and conversation history. Next.js 14 + z-ai-web-dev-sdk.",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^14.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "z-ai-web-dev-sdk": "latest"
+  },
+  "author": "Arjun Vashishtha",
+  "license": "MIT"
+}

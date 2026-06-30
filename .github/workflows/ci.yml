@@ -1,0 +1,21 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: |
+          set -e
+          for f in package.json next.config.js app/page.js app/layout.js app/api/chat/route.js README.md LICENSE; do
+            [ -f "$f" ] && echo "✅ $f" || { echo "❌ Missing: $f"; exit 1; }
+          done
