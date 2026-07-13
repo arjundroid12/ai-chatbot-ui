@@ -1,12 +1,4 @@
-/**
- * POST /api/chat
- * Body: { messages: [{role, content}] }
- * Returns: { content: "AI response" }
- *
- * Uses z-ai-web-dev-sdk (server-side only — never expose API keys to client)
- */
 import { NextResponse } from "next/server";
-import ZAI from "z-ai-web-dev-sdk";
 
 export async function POST(req) {
   try {
@@ -15,19 +7,34 @@ export async function POST(req) {
       return NextResponse.json({ error: "messages array required" }, { status: 400 });
     }
 
-    // Initialize the SDK (uses ZAI_API_KEY from env or default credentials)
-    const zai = await ZAI.create();
+    const apiKey = process.env.ZAI_API_KEY;
+    if (!apiKey) {
+      return NextResponse.json({ error: "ZAI_API_KEY not configured" }, { status: 500 });
+    }
 
-    const response = await zai.chat.completions.create({
-      messages,
-      // Optional: model selection, temperature, etc.
-      // temperature: 0.7,
+    const response = await fetch("https://api.z.ai/api/paas/v4/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "glm-4.5-flash",
+        messages,
+        max_tokens: 4000,
+      }),
     });
 
-    const content = response.choices?.[0]?.message?.content || "I have nothing to say.";
+    if (!response.ok) {
+      const err = await response.text();
+      return NextResponse.json({ error: `Z.AI API error: ${response.status}` }, { status: 500 });
+    }
+
+    const data = await response.json();
+    const content = data.choices?.[0]?.message?.content || "I have nothing to say.";
     return NextResponse.json({ content });
   } catch (err) {
     console.error("Chat API error:", err);
-    return NextResponse.json({ error: err.message || "AI request failed" }, { status: 500 });
+    return NextResponse.json({ error: err?.message || "Server error" }, { status: 500 });
   }
 }
